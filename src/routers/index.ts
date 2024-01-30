@@ -7,4 +7,4 @@ export const routes: Router = Router()
 
 routes.use('/users', userRouter)
 routes.use('/login', sessionRouter)
-routes.use('contact', contactRouter)
+routes.use('/contact', contactRouter)
