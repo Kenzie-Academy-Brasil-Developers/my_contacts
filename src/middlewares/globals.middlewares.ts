@@ -3,7 +3,7 @@ import { ZodTypeAny } from "zod";
 import AppError from "../error/AppError.error";
 import { verify } from "jsonwebtoken";
 
-export const verifyBody = (schema: ZodTypeAny) => (req: Request, res: Response, next: NextFunction):
+export const validateBody = (schema: ZodTypeAny) => (req: Request, res: Response, next: NextFunction):
 void => {
     req.body = schema.parse(req.body)
 

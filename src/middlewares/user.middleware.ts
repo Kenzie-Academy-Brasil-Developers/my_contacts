@@ -14,7 +14,7 @@ Promise<void> => {
 }
 
 
-export const verifyUniqueTelephone = async (req: Request, res: Response, next: NextFunction):
+export const verifyUniqueTelephoneUser = async (req: Request, res: Response, next: NextFunction):
 Promise<void> => {
     const { telephone } = req.body
     const user: User | null = await userRepo.findOneBy({telephone})
