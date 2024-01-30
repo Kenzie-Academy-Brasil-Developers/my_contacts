@@ -1,4 +1,4 @@
-import { NextFunction, Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import Contact from "../entities/Contact.entity";
 import { contactRepo } from "../repositiry";
 import AppError from "../error/AppError.error";
@@ -14,7 +14,7 @@ Promise<void> => {
 }
 
 
-export const verifyUniqueTelephone =  async (req: Request, res: Response, next: NextFunction):
+export const verifyUniqueTelephoneContac =  async (req: Request, res: Response, next: NextFunction):
 Promise<void> => {
     const { telephone } = req.body
     const contact: Contact | null = await contactRepo.findOneBy({telephone})
