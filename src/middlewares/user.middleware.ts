@@ -20,6 +20,8 @@ Promise<void> => {
     const user: User | null = await userRepo.findOneBy({telephone})
 
     if(user) throw new AppError('Telephone alread registered.')
+    
+    return next()
 }
 
 

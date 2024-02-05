@@ -3,7 +3,7 @@ import { z } from "zod";
 export const userSchema = z.object({
     id: z.number().positive(),
     name: z.string().max(120),
-    emaiil: z.string().email().max(120),
+    email: z.string().email().max(120),
     telephone: z.string().max(30),
     createdAt: z.string(),
     password: z.string().max(120)
@@ -11,7 +11,7 @@ export const userSchema = z.object({
 
 export const createUserSchema = userSchema.pick({
     name: true,
-    emaiil:true,
+    email:true,
     telephone:true,
     password:true,
 })
