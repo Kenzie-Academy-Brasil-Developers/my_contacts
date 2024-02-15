@@ -14,3 +14,8 @@ export const createContactSchema = contactSchema.omit({
     id:true,
     userId:true
 })
+
+export const updateContactSchema = createContactSchema.partial()
+
+export const returnContactSchema = contactSchema
+
