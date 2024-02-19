@@ -32,5 +32,7 @@ Promise<void> => {
 
     if(!user) throw new AppError('User not found')
 
+    res.locals = {...res.locals, user}
+
     next()
 }
