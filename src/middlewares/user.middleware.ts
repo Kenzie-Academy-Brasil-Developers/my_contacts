@@ -28,8 +28,15 @@ Promise<void> => {
 export const verifyUserExists = async (req: Request, res: Response, next: NextFunction):
 Promise<void> => {
     const { id } =  req.params
-    const user: User | null = await userRepo.findOneBy({id: Number(id)})
-
+    const user: User | null = await userRepo.findOne({
+        where: {
+            id: Number(id)
+        },
+        relations: {
+            contact: true
+        }
+        
+    })
     if(!user) throw new AppError('User not found')
 
     res.locals = {...res.locals, user}

@@ -1,14 +1,14 @@
 import User from "../entities/User.entity";
-import { UserCreate, UserReturn, UserUpdate } from "../interfaces/user.interface";
+import { UserCreate, UserCreateReturn, UserReturn, UserUpdate } from "../interfaces/user.interface";
 import { userRepo } from "../repositiry";
-import { userReturnSchema } from "../schemas/user.schema";
+import { userReturnCreateSchema, userReturnSchema } from "../schemas/user.schema";
 
-export const createUserService = async (data:UserCreate): Promise<UserReturn> => {
+export const createUserService = async (data:UserCreate): Promise<UserCreateReturn> => {
     const user: User = userRepo.create(data)
 
     await userRepo.save(user)
 
-    return userReturnSchema.parse(user)
+    return userReturnCreateSchema.parse(user)
 }
 
 export const readUserIdService =  async (data: User): Promise<UserReturn> => {

@@ -23,7 +23,7 @@ export default class User {
     password: string
 
     @OneToMany(() => Contact, (contact) => contact.user)
-    contact: Contact[]
+    contact: Array<Contact>
 
     @BeforeInsert()
     @BeforeUpdate()

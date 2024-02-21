@@ -19,7 +19,7 @@ Promise<void> => {
     const { telephone } = req.body
     const contact: Contact | null = await contactRepo.findOneBy({telephone})
 
-    if(telephone) throw  new AppError('Telephone already registered.', 409)
+    if(contact) throw  new AppError('Telephone already registered.', 409)
 
     return next()
 }
