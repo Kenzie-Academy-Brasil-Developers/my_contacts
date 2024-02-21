@@ -26,8 +26,8 @@ Promise<void> => {
 
 export const verifyContactExists =  async (req: Request, res: Response, next: NextFunction):
 Promise<void> => {
-    const { id } =  req.params
-    const contact: Contact | null = await contactRepo.findOneBy({id: Number(id)})
+    const { contactId } =  req.params
+    const contact: Contact | null = await contactRepo.findOneBy({id: Number(contactId)})
 
     if(!contact) throw new AppError('Contact not found.', 404)
 

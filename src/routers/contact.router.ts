@@ -3,7 +3,7 @@ import { validateBody, verifyPermissions, verifyToken } from "../middlewares/glo
 import { verifyContactExists, verifyUniqueContactEmaiil, verifyUniqueTelephoneContac } from "../middlewares/contacts.middlewares";
 import { verifyUserExists } from "../middlewares/user.middleware";
 import { createContactSchema, updateContactSchema } from "../schemas/contact.schema";
-import { createContactController, readContactController, updateContactController } from "../controllers/contact.controller";
+import { createContactController, deleteContactController, readContactController, readContactIdController, updateContactController } from "../controllers/contact.controller";
 
 export const contactRouter: Router = Router()
 
@@ -25,10 +25,12 @@ contactRouter.get('/:id',
 
 )
 
-contactRouter.get('/:id:',
+contactRouter.get('/:id/:contactId',
+    verifyUserExists,
     verifyToken,
     verifyPermissions,
-    verifyContactExists
+    verifyContactExists,
+    readContactIdController
 )
 
 contactRouter.patch('/:id/:contactId',
@@ -41,8 +43,10 @@ contactRouter.patch('/:id/:contactId',
     updateContactController
 )
 
-contactRouter.delete('/:id',
+contactRouter.delete('/:id/:contactId',
+    verifyUserExists,
     verifyToken,
     verifyPermissions,
-    verifyContactExists
+    verifyContactExists,
+    deleteContactController
 )
