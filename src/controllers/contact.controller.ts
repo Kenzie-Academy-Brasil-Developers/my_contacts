@@ -40,8 +40,9 @@ Promise<Response> => {
     const { user } = res.locals
     const contactsList: [] = user.contact
     const { contactId } = req.params
-
+    
     const contactUpdate: Contact | undefined = contactsList.find((contact: Contact) => contact.id === Number(contactId))
+    if(!contactUpdate) throw new AppError('Contact not found', 404)
     const newContact = await updateContactService(req.body, contactUpdate)
 
     return res.status(200).json(newContact)
