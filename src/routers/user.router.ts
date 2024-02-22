@@ -1,29 +1,36 @@
 import { Router } from "express";
 import { validateBody, verifyPermissions, verifyToken } from "../middlewares/globals.middlewares";
 import { verifyUniqueEmailUser, verifyUniqueTelephoneUser, verifyUserExists } from "../middlewares/user.middleware";
+import { createUserController, deleteUserController, readIdUserController, updateUserController } from "../controllers/user.controller";
+import { createUserSchema, updateUserSchema } from "../schemas/user.schema";
 
 export const userRouter: Router =  Router()
 
 userRouter.post('/',
-    validateBody,
+    validateBody(createUserSchema),
     verifyUniqueEmailUser,
-    verifyUniqueTelephoneUser
+    verifyUniqueTelephoneUser,
+    createUserController
 )
 
 userRouter.get('/:id', 
     verifyToken,
     verifyUserExists,
-    verifyPermissions
+    verifyPermissions,
+    readIdUserController
 )
 
 userRouter.patch('/:id',
-    validateBody,
+    validateBody(updateUserSchema),
     verifyToken,
-    verifyPermissions
+    verifyUserExists,
+    verifyPermissions,
+    updateUserController
 )
 
 userRouter.delete('/:id',
     verifyUserExists,
     verifyToken,
-    verifyPermissions
+    verifyPermissions,
+    deleteUserController
 )

@@ -19,15 +19,15 @@ Promise<void> => {
     const { telephone } = req.body
     const contact: Contact | null = await contactRepo.findOneBy({telephone})
 
-    if(telephone) throw  new AppError('Telephone already registered.', 409)
+    if(contact) throw  new AppError('Telephone already registered.', 409)
 
     return next()
 }
 
 export const verifyContactExists =  async (req: Request, res: Response, next: NextFunction):
 Promise<void> => {
-    const { id } =  req.params
-    const contact: Contact | null = await contactRepo.findOneBy({id: Number(id)})
+    const { contactId } =  req.params
+    const contact: Contact | null = await contactRepo.findOneBy({id: Number(contactId)})
 
     if(!contact) throw new AppError('Contact not found.', 404)
 

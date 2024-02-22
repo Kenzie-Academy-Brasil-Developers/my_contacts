@@ -1,39 +1,52 @@
 import { Router } from "express";
 import { validateBody, verifyPermissions, verifyToken } from "../middlewares/globals.middlewares";
 import { verifyContactExists, verifyUniqueContactEmaiil, verifyUniqueTelephoneContac } from "../middlewares/contacts.middlewares";
+import { verifyUserExists } from "../middlewares/user.middleware";
+import { createContactSchema, updateContactSchema } from "../schemas/contact.schema";
+import { createContactController, deleteContactController, readContactController, readContactIdController, updateContactController } from "../controllers/contact.controller";
 
 export const contactRouter: Router = Router()
 
-contactRouter.post('/',
+contactRouter.post('/:id',
+    verifyUserExists,
+    validateBody(createContactSchema),
     verifyToken,
     verifyPermissions,
-    validateBody,
     verifyUniqueContactEmaiil,
     verifyUniqueTelephoneContac,
+    createContactController
 )
 
-contactRouter.get('/', 
+contactRouter.get('/:id',
+    verifyUserExists,
     verifyToken,
     verifyPermissions,
+    readContactController
 
 )
 
-contactRouter.get('/:id:',
+contactRouter.get('/:id/:contactId',
+    verifyUserExists,
     verifyToken,
     verifyPermissions,
-    verifyContactExists
+    verifyContactExists,
+    readContactIdController
 )
 
-contactRouter.patch('/:id',
+contactRouter.patch('/:id/:contactId',
+    verifyUserExists,
     verifyToken,
     verifyPermissions,
-    validateBody,
+    validateBody(updateContactSchema),
     verifyUniqueContactEmaiil,
     verifyUniqueTelephoneContac,
+    updateContactController
 )
 
-contactRouter.delete('/:id',
+contactRouter.delete('/:id/:contactId',
+    verifyUserExists,
     verifyToken,
     verifyPermissions,
-    verifyContactExists
+    verifyContactExists,
+    deleteContactController
 )
