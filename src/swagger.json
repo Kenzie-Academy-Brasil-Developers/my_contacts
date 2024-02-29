@@ -1,0 +1,851 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "CRUD de Usuário e seus Contatos.",
+        "description": "API para cadastrar um Usuário e seus contatos relacionados a ele.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000",
+            "description": "Development env"
+        },
+        {
+            "url": "http://onrender-clients-api.com",
+            "description": "production env"
+        }
+    ],
+    "paths": {
+        "/users":{
+            "post":{
+                "description": "Rota responsável por cadstrar o usuário",
+                "tags": ["Rotas sem parâmetros", "Rotas de usuário"],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/createUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201":{
+                        "description": "Created",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/readUser"
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "name": "Jonatas Santos",
+                                    "email": "Jonatas@mail.com",
+                                    "telephone": "71 9 9666-8745",
+                                    "createdAt": "2024-02-20",
+                                    "Contact": []
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description": "Conflict",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError": {
+                                        "value": {
+                                            "message": "Emal alread exists."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{}]
+            }
+        },
+        "/login":{
+            "post":{
+                "description": "Rota responsável por autenticar o usuário.",
+                "tags": ["Rotas sem parâmetros", "Rotas de usuário"],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/loginUser"
+                            }
+                        }
+                    }
+                },
+                "security": [{}],
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "token": {
+                                        "value": {
+                                            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpqaG9uQG1haWwuY29tIiwiaWF0IjoxNzA4OTA1NjczLCJleHAiOjE3MDg5MzQ0NzMsInN1YiI6IjEifQ.Tf2kwxYexhFpV9YoQWywti-GixLhCrYMGljXexYRZuw"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "conflictError": {
+                                        "value": {
+                                            "message": "Invalid Credentials"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/:id":{
+            "get": {
+                "description": "OK",
+                "tags": ["Rotas com parâmetros", "Rotas de usuário"],
+                "parameters": [{
+                    "schema":{
+                        "type": "number"
+                    },
+                    "in": "query",
+                    "description": "Id do usuário",
+                    "name": "id"
+                }],
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "responses": {
+                                        "value": {
+                                            "id": 1,
+                                            "name": "Jhon",
+                                            "email": "jjhon@mail.com",
+                                            "telephone": "(44)98885-7777",
+                                            "createdAt": "2024-02-20",
+                                            "contact": [
+                                                {
+                                                    "id": 4,
+                                                    "name": "Paulo dos Santos",
+                                                    "email": "Luana@mail.com",
+                                                    "telephone": "61 74418777",
+                                                    "createdAt": "2024-02-20"
+                                                },
+                                                {
+                                                    "id": 5,
+                                                    "name": "Ana dos Santos",
+                                                    "email": "Ana@mail.com",
+                                                    "telephone": "41 74418777",
+                                                    "createdAt": "2024-02-20"
+                                                }]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json":{
+                               "examples": {
+                                "conflictError":{
+                                    "value":{
+                                        "message": "jwt expired"
+                                    }
+                                }
+                               }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json":{
+                               "examples": {
+                                "conflictError":{
+                                    "value":{
+                                        "message": "User not found"
+                                    }
+                                }
+                               }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Rotdas responsável por atualizar os dados do usuário informado",
+                "tags": [
+                    "Rotas com parâmetros",
+                    "Rotas de usuário"
+                ],
+                "parameters": [
+                    {
+                        "schema":{
+                            "type": "number"
+                        },
+                        "in": "query",
+                        "description": "Id do usuário que deseja atualizar",
+                        "name": "id"
+                    }
+                ],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/createUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/readUser"
+                                },
+                                "examples": {
+                                    "user":{
+                                        "value": {
+                                            "id": 1,
+                                            "name": "Carlos Sants",
+                                            "email": "Carlos Sants"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                          "application/json": {
+                            "examples": {
+                              "conflictError": {
+                                "value": {
+                                  "message": "Email already exists"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }                    
+                }
+            },
+            "delete": {
+                "description": "Rota responsável por deletar o usuário.",
+                "tags": [
+                    "Rotas com parâmetros",
+                    "Rotas de usuário"
+                ],
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "number"
+                        },
+                        "in": "query",
+                        "description": "Id do usuário que deseja deletar.",
+                        "name": "id"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Body content.",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "void":{
+                                        "value":{}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "User not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description": "Conflict",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value":{
+                                            "message": "Insufficient permissions"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/contact/:userId":{
+            "get": {
+                "description": "Rota responsável por buscar todos os contatos do usuário.",
+                "tags": [
+                    "Rotas com parâmetros",
+                    "Rotas de contatos"
+                ],
+                "parameters": [
+                    {
+                        "schema":{
+                            "type": "number"
+                        },
+                        "in": "query",
+                        "description": "Id do usuário para qual deseja buscar os contatos",
+                        "name": "Id"
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/readAllContact"
+                                },
+                                "examples": {
+                                    "response":{
+                                        "value": {
+                                            "contact":[
+                                                {
+                                                    "id": 4,
+                                                    "name": "Paulo dos Santos",
+                                                    "email": "Luana@mail.com",
+                                                    "telephone": "61 74418777",
+                                                    "createdAt": "2024-02-20"
+                                                },
+                                                {
+                                                    "id": 5,
+                                                    "name": "Ana dos Santos",
+                                                    "email": "Ana@mail.com",
+                                                    "telephone": "41 74418777",
+                                                    "createdAt": "2024-02-20"
+                                                },
+                                                {
+                                                    "id": 6,
+                                                    "name": "Ana dos Santos",
+                                                    "email": "Anna@mail.com",
+                                                    "telephone": "41 74418777",
+                                                    "createdAt": "2024-02-20"
+                                                },
+                                                {
+                                                    "id": 7,
+                                                    "name": "Ana dos Santos",
+                                                    "email": "Annna@mail.com",
+                                                    "telephone": "41 74418777",
+                                                    "createdAt": "2024-02-20"
+                                                },
+                                                {
+                                                    "id": 8,
+                                                    "name": "Gabriela",
+                                                    "email": "gabis@mail.com",
+                                                    "telephone": "96 18318577",
+                                                    "createdAt": "2024-02-20"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description": "Conflict",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": "Insufficient permissions"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "User not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "jwt must be provider"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post":{
+                "description": "Rosta responsável por cadastrar contatos do usuário",
+                "tags": ["Rotas com parâmetros", "Rotas de contatos"],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/createContact"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201":{
+                        "description": "Created",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/createContact"
+                                },
+                                "examples": {
+                                    "contact":{
+                                        "value": {
+                                            "id": 4,
+                                            "name": "Paulo dos Santos",
+                                            "email": "Luana@mail.com",
+                                            "telephone": "61 74418777",
+                                            "createdAt": "2024-02-20"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "User not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description": "Conflict",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "Email alread exists"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "Insufficient permissions"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/contact/:userId/:contactId":{
+            "get":{
+                "description": "Rota responsável por buscar o contato por id.",
+                "tags": ["Rotas com parâmetros", "Rotas de contatos"],
+                "parameters": [
+                    {
+                        "schema":{
+                            "type": "number"
+                        },
+                        "in": "query",
+                        "description": "Id do usuário e Id do contato que deseja buscar",
+                        "name": "userId e ContactId"
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "response":{
+                                        "value":{
+                                            "contact": {
+                                                "id": 4,
+                                                "name": "Paulo dos Santos",
+                                                "email": "Luana@mail.com",
+                                                "telephone": "61 74418777",
+                                                "createdAt": "2024-02-20"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "Insufficient permissions."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Not Found",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "contact not found."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch":{
+                "description": "Rota responsável por buscar",
+                "tags": ["Rotas com parâmetros", "Rotas de contatos"],
+                "parameters": [
+                    {
+                        "schema":{
+                            "type": "number"
+                        },
+                        "in": "query",
+                        "name": "id"
+                    }
+                ],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/createContact"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/createContact"
+                                },
+                                "examples": {
+                                    "contact":{
+                                        "value": {
+                                            "id": 1,
+                                            "name": "Carlos Dos Santos"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Not Found",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "contact not found."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "jwt expired."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description": "Conflict",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "Email alread exists."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Rota responsável por deletar um contato do usuário.",
+                "tags": [
+                    "Rotas com parâmetros",
+                    "Rotas de contatos"
+                ],
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "number"
+                        },
+                        "in": "query",
+                        "description": "Id do contato que deseja deletar.",
+                        "name": "id"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Body content.",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "void":{
+                                        "value":{}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value": {
+                                            "message": "Contact not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description": "Conflict",
+                        "content": {
+                            "application/json":{
+                                "examples": {
+                                    "conflictError":{
+                                        "value":{
+                                            "message": "Insufficient permissions"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "createUser": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email":{
+                        "type": "string"
+                    },
+                    "telephone":{
+                        "type": "string"
+                    },
+                    "password":{
+                        "type": "string"
+                    }
+                }
+            },
+            "readUser":{
+                "type": "object",
+                "properties": {
+                    "id":{
+                        "type": "number"
+                    },
+                    "name":{
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "telephone":{
+                        "type": "string"
+                    },
+                    "creatdAt":{
+                        "type": "string"
+                    },
+                    "contact":{
+                        "type": "array"
+                    }
+                    
+                }
+            },
+            "loginUser":{
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password":{
+                        "type": "string"
+                    }
+                }
+            },
+            "createContact": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "telephone": {
+                        "type": "string"
+                    }
+                }
+            },
+            "readAllContact": {
+                "type": "array",
+                "properties": {
+                    "id":{
+                        "type": "number"
+                    },
+                    "name":{
+                        "type": "string"
+                    },
+                    "email":{
+                        "type": "string"
+                    },
+                    "telephone":{
+                        "type": "string"
+                    },
+                    "createdAt":{
+                        "type": "string"
+                    }
+                }
+            },
+            "readContact": {
+                "type": "object",
+                "properties": {
+                    "id":{
+                        "type": "number"
+                    },
+                    "name":{
+                        "type": "string"
+                    },
+                    "email":{
+                        "type": "string"
+                    },
+                    "telephone":{
+                        "type": "string"
+                    },
+                    "createdAt":{
+                        "type": "string"
+                    }
+            }   }
+        }
+    },
+    "security": [
+        {
+            "JWT":[]
+        }
+    ]
+}
