@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsnd --cls --rs --ignore-watch node_modules src/server.ts",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "typeorm:generate": "typeorm-ts-node-commonjs migration:generate -d src/data-source",
+    "typeorm:run": "typeorm-ts-node-commonjs migration:run -d src/data-source"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/swagger-ui-express": "^4.1.6",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
@@ -17,6 +22,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.2.1",
+    "swagger-ui-express": "^5.0.0",
     "typeorm": "^0.3.19",
     "zod": "^3.22.4"
   },
