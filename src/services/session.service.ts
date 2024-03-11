@@ -23,5 +23,5 @@ Promise<LoginReturn> => {
         { subject: user.id.toString(), expiresIn: process.env.EXPIRES_IN!}
     )
 
-    return { token }
+    return { token, user }
 }
