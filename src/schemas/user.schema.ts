@@ -29,6 +29,9 @@ export const updateUserSchema = createUserSchema.partial()
 
 export const userReturnSchema = userSchema.omit({password:true})
 
+// export const userReturnLoginSchema = userSchema.omit({password:true,})
+
+
 export const userReturnCreateSchema =  userSchema.omit({password: true, contact: true})
 
 export const userLoginSchema = userSchema.pick({
