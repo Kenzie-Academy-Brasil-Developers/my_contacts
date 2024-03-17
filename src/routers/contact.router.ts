@@ -38,8 +38,6 @@ contactRouter.patch('/:id/:contactId',
     verifyToken,
     verifyPermissions,
     validateBody(updateContactSchema),
-    verifyUniqueContactEmaiil,
-    verifyUniqueTelephoneContac,
     updateContactController
 )
 

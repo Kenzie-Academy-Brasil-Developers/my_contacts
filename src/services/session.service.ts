@@ -32,6 +32,5 @@ Promise<LoginReturn> => {
         { subject: user.id.toString(), expiresIn: process.env.EXPIRES_IN!}
     )
     const userReturn: UserReturn = userReturnSchema.parse(user)
-    console.log(userReturn, '<---------------')
     return { token, userReturn }
 }
